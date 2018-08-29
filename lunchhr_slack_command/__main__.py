@@ -1,5 +1,3 @@
-# pylint: disable=C0103
-
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
