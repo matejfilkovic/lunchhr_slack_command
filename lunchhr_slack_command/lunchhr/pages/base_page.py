@@ -1,3 +1,5 @@
+# pylint: disable=R0903
+
 class BasePage():
     def __init__(self, driver, user):
         self.driver = driver

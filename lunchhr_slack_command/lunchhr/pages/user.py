@@ -1,8 +1,9 @@
+# pylint: disable=R0903
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
-from functools import wraps
+from selenium.webdriver.support.ui import WebDriverWait
 
 class User:
     login_page_url = 'https://www.lunch.hr'
