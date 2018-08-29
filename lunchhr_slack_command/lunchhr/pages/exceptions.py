@@ -1,0 +1,2 @@
+class OrderDetailsElementMissingException(BaseException):
+    pass
