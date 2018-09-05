@@ -43,3 +43,9 @@ def validate_slack_signature():
     except (KeyError, ValueError):
         # Missing Slack headers or invalid timestamp value.
         return False
+
+def create_slack_message(text):
+    return {
+        'response_type': 'ephemeral',
+        'text': text
+    }
