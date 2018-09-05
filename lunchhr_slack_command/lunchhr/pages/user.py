@@ -2,8 +2,10 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
+
+from . import exceptions
 
 class User:
     login_page_url = 'https://www.lunch.hr'
@@ -34,7 +36,10 @@ class User:
         login_button = driver.find_element_by_class_name('btn-login')
         login_button.click()
 
-        wait = WebDriverWait(driver, 5)
-        wait.until_not(EC.visibility_of_element_located((By.CLASS_NAME, 'remodal-overlay')))
+        try:
+            wait = WebDriverWait(driver, 5)
+            wait.until_not(EC.visibility_of_element_located((By.CLASS_NAME, 'remodal-overlay')))
 
-        self.is_authenticated = True
+            self.is_authenticated = True
+        except TimeoutException:
+            raise exceptions.AuthenticationFailureException()
