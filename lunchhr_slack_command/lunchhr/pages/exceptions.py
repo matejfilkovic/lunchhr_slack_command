@@ -1,2 +1,5 @@
-class OrderDetailsElementMissingException(BaseException):
+class AuthenticationFailureException(Exception):
+    pass
+
+class OrderDetailsElementMissingException(Exception):
     pass
