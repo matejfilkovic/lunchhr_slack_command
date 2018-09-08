@@ -4,15 +4,18 @@ import requests
 from ..lunchhr.pages.exceptions import AuthenticationFailureException
 from . import utils
 
+AUTHENTICATION_SUCCESSFULL_MESSAGE = 'Authentication successfull!'
+AUTHENTICATION_FAILURE_MESSAGE = 'Authentication failure!'
+
 def authenticate(lunchhr_proxy, user_id, credentials, response_url):
     try:
         lunchhr_proxy.authenticate_user_and_create_pages(user_id, credentials)
 
-        message = utils.create_slack_message('Authentication successfull!')
+        message = utils.create_slack_message(AUTHENTICATION_SUCCESSFULL_MESSAGE)
 
         requests.post(response_url, json=message)
     except AuthenticationFailureException:
-        message = utils.create_slack_message('Authentication failure!')
+        message = utils.create_slack_message(AUTHENTICATION_FAILURE_MESSAGE)
 
         requests.post(response_url, json=message)
 
