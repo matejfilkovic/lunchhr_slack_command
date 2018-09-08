@@ -32,9 +32,11 @@ def validate_slack_signature():
 
         request_body = request.get_data()
         sig_basestring = ('v0:' + timestamp + ':').encode('utf_8') + request_body
-        digest = hmac.new(SLACK_SIGNING_SECRET.encode('utf_8'),
-                          msg=sig_basestring,
-                          digestmod=hashlib.sha256).hexdigest()
+        digest = hmac.new(
+            SLACK_SIGNING_SECRET.encode('utf_8'),
+            msg=sig_basestring,
+            digestmod=hashlib.sha256
+        ).hexdigest()
 
         # Pull the signature and remove v0= from the begining.
         slack_signature = request.headers['X-Slack-Signature'][3:]

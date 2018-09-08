@@ -4,9 +4,9 @@ import requests
 from ..lunchhr.pages.exceptions import AuthenticationFailureException
 from . import utils
 
-def authenticate(lunchhrProxy, user_id, credentials, response_url):
+def authenticate(lunchhr_proxy, user_id, credentials, response_url):
     try:
-        lunchhrProxy.authenticate_user_and_create_pages(user_id, credentials)
+        lunchhr_proxy.authenticate_user_and_create_pages(user_id, credentials)
 
         message = utils.create_slack_message('Authentication successfull!')
 
@@ -16,7 +16,10 @@ def authenticate(lunchhrProxy, user_id, credentials, response_url):
 
         requests.post(response_url, json=message)
 
-def handle_authenticate(lunchhrProxy, tokens, user_id, response_url):
+INVALID_EMAIL_OR_PASSWORD_MESSAGE = 'Please specify an email and a password!'
+TRYING_TO_AUTHENTICATE_MESSAGE = 'Trying to authenticate you.'
+
+def handle_authenticate(lunchhr_proxy, tokens, user_id, response_url):
     '''
     Handles authenticate sub command.
     '''
@@ -29,9 +32,9 @@ def handle_authenticate(lunchhrProxy, tokens, user_id, response_url):
             'password': password
         }
 
-        thr = Thread(target=authenticate, args=[lunchhrProxy, user_id, credentials, response_url])
+        thr = Thread(target=authenticate, args=[lunchhr_proxy, user_id, credentials, response_url])
         thr.start()
 
-        return "Trying to authenticate you."
+        return TRYING_TO_AUTHENTICATE_MESSAGE
     except ValueError:
-        return "Please specify an email and a password!"
+        return INVALID_EMAIL_OR_PASSWORD_MESSAGE
