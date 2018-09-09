@@ -38,7 +38,11 @@ class User:
 
         try:
             wait = WebDriverWait(driver, 5)
-            wait.until_not(EC.visibility_of_element_located((By.CLASS_NAME, 'remodal-overlay')))
+            wait.until_not(
+                EC.visibility_of_element_located(
+                    (By.CLASS_NAME, 'remodal-overlay')
+                )
+            )
 
             self.is_authenticated = True
         except TimeoutException:

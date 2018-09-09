@@ -11,7 +11,9 @@ def authenticate(lunchhr_proxy, user_id, credentials, response_url):
     try:
         lunchhr_proxy.authenticate_user_and_create_pages(user_id, credentials)
 
-        message = utils.create_slack_message(AUTHENTICATION_SUCCESSFULL_MESSAGE)
+        message = utils.create_slack_message(
+            AUTHENTICATION_SUCCESSFULL_MESSAGE
+        )
 
         requests.post(response_url, json=message)
     except AuthenticationFailureException:
@@ -35,7 +37,10 @@ def handle_authenticate(lunchhr_proxy, tokens, user_id, response_url):
             'password': password
         }
 
-        thr = Thread(target=authenticate, args=[lunchhr_proxy, user_id, credentials, response_url])
+        thr = Thread(
+            target=authenticate,
+            args=[lunchhr_proxy, user_id, credentials, response_url]
+        )
         thr.start()
 
         return TRYING_TO_AUTHENTICATE_MESSAGE

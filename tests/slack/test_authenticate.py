@@ -52,9 +52,9 @@ class TestAuthenticate(unittest.TestCase):
 
     @mock.patch('requests.post')
     def test_authentication_failure(self, postMock):
-        self.lunchhr_proxy_mock \
-            .authenticate_user_and_create_pages \
-            .side_effect = AuthenticationFailureException
+        (self.lunchhr_proxy_mock
+         .authenticate_user_and_create_pages
+         .side_effect) = AuthenticationFailureException
 
         response_url = 'https://response-url.com'
 

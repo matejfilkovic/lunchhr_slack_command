@@ -31,7 +31,11 @@ def validate_slack_signature():
             return False
 
         request_body = request.get_data()
-        sig_basestring = ('v0:' + timestamp + ':').encode('utf_8') + request_body
+        sig_basestring = (
+            ('v0:' + timestamp + ':').encode('utf_8')
+            + request_body
+        )
+
         digest = hmac.new(
             SLACK_SIGNING_SECRET.encode('utf_8'),
             msg=sig_basestring,

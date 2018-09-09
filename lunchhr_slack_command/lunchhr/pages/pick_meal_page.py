@@ -1,5 +1,3 @@
-# pylint: disable=C0301
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -26,18 +24,26 @@ class PickMealPage(BasePage):
         selected_day_picker_elem.click()
 
         wait = WebDriverWait(self.driver, config.DEFAULT_WAITING_TIME)
-        menu_button_element = wait.until(EC.presence_of_element_located((By.LINK_TEXT, 'JELOVNIK')))
+        menu_button_element = wait.until(
+            EC.presence_of_element_located((By.LINK_TEXT, 'JELOVNIK'))
+        )
         menu_button_element.click()
 
     def extract_available_meals(self):
         meal_picker_elements = self.get_meal_picker_elements()
-        meals = [self.extract_meal_name(meal_picker_element) for meal_picker_element
-                 in meal_picker_elements]
+        meals = [
+            self.extract_meal_name(meal_picker_element) for meal_picker_element
+            in meal_picker_elements
+        ]
 
         return meals
 
     def get_meal_picker_elements(self):
-        elements = self.driver.find_elements_by_xpath("//div[contains(@class, 'DailyLunchesNavigationLink-module__container')]")
+        meal_picker_element_xpath = (
+            "//div[contains(@class, "
+            "'DailyLunchesNavigationLink-module__container')]"
+        )
+        elements = self.driver.find_elements_by_xpath(meal_picker_element_xpath)
 
         return elements
 
@@ -45,9 +51,23 @@ class PickMealPage(BasePage):
         # Make a meal active by clicking a day picker elem.
         meal_picker_elem.click()
 
+        # Wait until an animation completes.
+        animation_element_xpath = (
+            "//section[contains(@class, 'translate-top-down-enter-active')]"
+        )
         wait = WebDriverWait(self.driver, config.DEFAULT_WAITING_TIME)
-        wait.until(EC.invisibility_of_element_located((By.XPATH, "//section[contains(@class, 'translate-top-down-enter-active')]")))
+        wait.until(
+            EC.invisibility_of_element_located(
+                (By.XPATH, animation_element_xpath)
+            )
+        )
 
-        meal_name_element = self.driver.find_element_by_xpath("//section[contains(@class, 'DailyLunchInfo-module__container')]//h1")
+        meal_name_element_xpath = (
+            "//section[contains(@class, "
+            "'DailyLunchInfo-module__container')]//h1"
+        )
+        meal_name_element = self.driver.find_element_by_xpath(
+            meal_name_element_xpath
+        )
 
         return meal_name_element.text

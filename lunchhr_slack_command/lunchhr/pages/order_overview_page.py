@@ -1,5 +1,3 @@
-# pylint: disable=C0301
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,17 +18,25 @@ class OrderOverviewPage(BasePage):
         self.authenticate_if_needed()
 
         wait = WebDriverWait(self.driver, config.DEFAULT_WAITING_TIME)
-        overview_element = wait.until(EC.presence_of_element_located((By.LINK_TEXT, 'Pregled')))
+        overview_element = wait.until(
+            EC.presence_of_element_located((By.LINK_TEXT, 'Pregled'))
+        )
+
         overview_element.click()
 
     def expand_orders(self):
         day_picker_elements = self.get_day_picker_elements()
-        orders = [self.expand_order(day_picker_element) for day_picker_element in day_picker_elements]
+        orders = [
+            self.expand_order(day_picker_element) for day_picker_element
+            in day_picker_elements
+        ]
 
         return orders
 
     def get_day_picker_elements(self):
-        elements = self.driver.find_elements_by_xpath("//div[contains(@class, 'CalendarDay-module__container')]")
+        elements = self.driver.find_elements_by_xpath(
+            "//div[contains(@class, 'CalendarDay-module__container')]"
+        )
 
         return elements
 
@@ -46,8 +52,12 @@ class OrderOverviewPage(BasePage):
     def extract_meal_name_for_selected_day(self):
         driver = self.driver
 
+        # pylint: disable=C0301
+
         try:
-            meal_name_element = driver.find_element_by_xpath("//h1[contains(@class, 'OrderDetails-module__title')]")
+            meal_name_element = driver.find_element_by_xpath(
+                "//h1[contains(@class, 'OrderDetails-module__title')]"
+            )
 
             return meal_name_element.text
         except NoSuchElementException:
@@ -55,6 +65,8 @@ class OrderOverviewPage(BasePage):
                 # If an order details element is missing, check whether an element
                 # for an empty order is missing. If the empty element is missing, we
                 # have a problem :/.
-                driver.find_element_by_xpath("//div[contains(@class, 'UserOrdersOverview-module__emptyOrdersOverview')]")
+                driver.find_element_by_xpath(
+                    "//div[contains(@class, 'UserOrdersOverview-module__emptyOrdersOverview')]"
+                )
             except NoSuchElementException:
                 raise OrderDetailsElementMissingException()
