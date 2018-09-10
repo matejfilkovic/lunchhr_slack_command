@@ -21,6 +21,7 @@ def fetch_orders(lunchhr_proxy, user_id, response_url):
 FETCHING_ORDERS_MESSAGE = 'Fetching your orders.'
 
 # pylint: disable=W0613
+@utils.validate_user_authenticated
 def handle_overview(lunchhr_proxy, tokens, user_id, response_url):
     '''
     Handles overview sub command.
