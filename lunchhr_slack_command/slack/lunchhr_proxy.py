@@ -18,6 +18,9 @@ class LunchhrProxy:
 
         return user_pages.order_overview_page.get_orders()
 
+    def is_user_authenticated(self, slack_user_id):
+        return self.user_pages_map.get(slack_user_id) is not None
+
     @staticmethod
     def create():
         selenium_driver = webdriver.Firefox()

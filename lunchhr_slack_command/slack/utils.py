@@ -55,3 +55,22 @@ def create_slack_message(text):
         'response_type': 'ephemeral',
         'text': text
     }
+
+PLEASE_AUTHENTICATE_MESSAGE = (
+    'Please authenticate to lunchhr with '
+    'authenticate subcommand!'
+)
+
+def validate_user_authenticated(func):
+    '''
+    Decorator which intercepts command requests. If a user is not
+    authenticated to lunchhr, it returns a message to authenticate.
+    '''
+    @wraps(func)
+    def wrapper(lunchhr_proxy, tokens, user_id, response_url):
+        if not lunchhr_proxy.is_user_authenticated(user_id):
+            return PLEASE_AUTHENTICATE_MESSAGE
+
+        return func(lunchhr_proxy, tokens, user_id, response_url)
+
+    return wrapper
