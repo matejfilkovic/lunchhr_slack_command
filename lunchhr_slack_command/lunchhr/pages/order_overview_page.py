@@ -44,7 +44,10 @@ class OrderOverviewPage(BasePage):
         # Make a day active by clicking a day picker elem.
         day_picker_element.click()
 
-        date_description = day_picker_element.text
+        date_description = self.driver.find_element_by_xpath(
+            "//div[contains(@class, 'CalendarDay-module__dateContainerActive')]"
+        ).text
+
         meal_name = self.extract_meal_name_for_selected_day()
 
         return Order(date_description, meal_name)
