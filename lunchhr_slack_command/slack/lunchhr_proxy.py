@@ -13,6 +13,11 @@ class LunchhrProxy:
 
         self.user_pages_map[slack_user_id] = userPages
 
+    def fetch_orders(self, slack_user_id):
+        user_pages = self.user_pages_map[slack_user_id]
+
+        return user_pages.order_overview_page.get_orders()
+
     @staticmethod
     def create():
         selenium_driver = webdriver.Firefox()

@@ -3,6 +3,7 @@ from flask import Flask, request
 from . import utils
 from .lunchhr_proxy import LunchhrProxy
 from .authenticate import handle_authenticate
+from .overview import handle_overview
 
 app = Flask(__name__)
 
@@ -18,7 +19,8 @@ def hello():
 
 
 HANDLERS = {
-    'authenticate': handle_authenticate
+    'authenticate': handle_authenticate,
+    'overview': handle_overview
 }
 
 USAGE = (
