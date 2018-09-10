@@ -21,14 +21,21 @@ HANDLERS = {
     'authenticate': handle_authenticate
 }
 
+USAGE = (
+    "Usage:\n"
+    "\tauthenticate <email> <password>\n"
+    "\toverview\n"
+    "\torder <day> <meal> <time-slot>\n"
+)
+
 def handle_command(user_id, command_text, response_url):
     tokens = command_text.split(' ')
     if not tokens:
-        return "authenticate <email> <password>"
+        return USAGE
 
     handler = HANDLERS.get(tokens[0])
 
     if not handler:
-        return "authenticate <email> <password>"
+        return USAGE
 
     return handler(lunchhrProxy, tokens[1:], user_id, response_url)
