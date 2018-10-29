@@ -21,6 +21,12 @@ class LunchhrProxy:
     def is_user_authenticated(self, slack_user_id):
         return self.user_pages_map.get(slack_user_id) is not None
 
+    def fetch_meal_list_for_selected_day(self, slack_user_id, day_index):
+        user_pages = self.user_pages_map[slack_user_id]
+
+        return user_pages.pick_meal_page \
+                         .get_meal_list_for_selected_day(day_index)
+
     @staticmethod
     def create():
         selenium_driver = webdriver.Firefox()

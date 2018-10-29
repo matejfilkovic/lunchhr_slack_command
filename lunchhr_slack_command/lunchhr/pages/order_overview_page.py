@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -54,6 +56,10 @@ class OrderOverviewPage(BasePage):
 
     def extract_meal_name_for_selected_day(self):
         driver = self.driver
+
+        # Give a browser enough time to refresh the meal
+        # elements.
+        time.sleep(1)
 
         # pylint: disable=C0301
 

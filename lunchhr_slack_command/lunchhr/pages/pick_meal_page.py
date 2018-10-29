@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -32,8 +34,8 @@ class PickMealPage(BasePage):
     def extract_available_meals(self):
         meal_picker_elements = self.get_meal_picker_elements()
         meals = [
-            self.extract_meal_name(meal_picker_element) for meal_picker_element
-            in meal_picker_elements
+            self.extract_meal_details(meal_picker_element)
+            for meal_picker_element in meal_picker_elements
         ]
 
         return meals
@@ -47,9 +49,13 @@ class PickMealPage(BasePage):
 
         return elements
 
-    def extract_meal_name(self, meal_picker_elem):
+    def extract_meal_details(self, meal_picker_elem):
         # Make a meal active by clicking a day picker elem.
         meal_picker_elem.click()
+
+        # Give a browser enough time to refresh the meal
+        # elements.
+        time.sleep(1)
 
         # Wait until an animation completes.
         animation_element_xpath = (
@@ -70,4 +76,27 @@ class PickMealPage(BasePage):
             meal_name_element_xpath
         )
 
-        return meal_name_element.text
+        background_image_element = self.driver.find_element_by_class_name(
+            'l-daily-lunch-image'
+        )
+
+        background_image_url = background_image_element.value_of_css_property(
+            'background-image'
+        )[5:-2]
+
+        salad_element = self.driver.find_element_by_xpath(
+            ("//span[contains(@class, "
+             "'DailyLunchInfo-module__subtitle')]")
+        )
+
+        calories_element = self.driver.find_element_by_xpath(
+            ("//h1[contains(@class, "
+             "'DailyLunchNutrientsTable-module__calorificValueContainer')]")
+        )
+
+        return {
+            'name': meal_name_element.text,
+            'image': background_image_url,
+            'calories': calories_element.text,
+            'side_dish': salad_element.text
+        }
